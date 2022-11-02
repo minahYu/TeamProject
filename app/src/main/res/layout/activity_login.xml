@@ -11,21 +11,23 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
 
         <EditText
             android:layout_height="wrap_content"
-            android:layout_with="match_parent"
+            android:layout_width="match_parent"
             android:text="@string/id" />
 
         <EditText
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_with="match_parent"
             android:text="@string/password" />
 
         <Button
             android:layout_height="wrap_content"
-            android:layout_with="match_parent"
+            android:layout_width="match_parent"/>
     </LinearLayout>
 
 </RelativeLayout>

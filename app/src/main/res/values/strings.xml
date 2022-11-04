@@ -16,6 +16,10 @@
     <string name="signout_success">Signout success</string>
     <string name="signout_fail">Signout fail</string>
     <string name="signout_fail_null">Please enter your email and password</string>
+    <string name="signup">Sign-up</string>
+    <string name='signin'>Sign-in</string>
+    <string name="create_account">Create an Account</string>
+    <string name="no_account">if you don't have any account? then,</string>
 
     <!-- Bottom Navigation View -->
     <string name="home">home</string>

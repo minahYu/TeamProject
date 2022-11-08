@@ -14,11 +14,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        binding.bottomNavigation.setOnClickListener {
-            when(it) {
-                R.id.action_home
-            }
-        }
+
     }
 
 }

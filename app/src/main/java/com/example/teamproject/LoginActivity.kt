@@ -26,6 +26,12 @@ class LoginActivity : AppCompatActivity() {
             startActivity(Intent(this, CreateAccountActivity::class.java))
         }
     }
+
+    override fun onStart() {
+        super.onStart()
+        moveMainPage(auth?.currentUser)
+    }
+
     fun signInAndSignUp() {
         auth?.createUserWithEmailAndPassword(binding.email.text.toString(), binding.password.text.toString())
             ?.addOnCompleteListener {
@@ -46,18 +52,24 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun signInEmail() {
-        auth?.createUserWithEmailAndPassword(binding.email.text.toString(), binding.password.text.toString())
+        auth?.signInWithEmailAndPassword(binding.email.text.toString(), binding.password.text.toString())
             ?.addOnCompleteListener {
                     task ->
                 if(task.isSuccessful) {
                     //Login Success
                     transitionPage1(task.result?.user)
-                }
-                else {
+                } else {
                     //show the error message
                     Toast.makeText(this, task.exception?.message, Toast.LENGTH_LONG).show()
                 }
             }
+    }
+
+    fun moveMainPage(user:FirebaseUser?) {
+        if(user != null) {
+            startActivity(Intent(this,MainActivity::class.java))
+            finish()
+        }
     }
 
     fun transitionPage1(user:FirebaseUser?) {

@@ -7,28 +7,42 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/detail_appbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fitsSystemWindows="true">
-
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:width="match_parent"
-            android:height="wrap_content">
+            android:id="@+id/my_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="35dp">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
             <ImageView
-                android:width="match_parent"
-                android:height="wrap_content"
-                android:src="@drawable/simple_script"/>
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="22dp"
+                android:id="@+id/toolbar_btn_back"
+                android:src="@drawable/ic_arrow_back"/>
+                <TextView
+                    android:text="UserId"
+                    android:textSize="16sp"
+                    android:textColor="@color/colorNavIcon"
+                    android:gravity="center"
+                    android:id="@+id/toolbar_username"
+                    android:layout_toRightOf="@+id/toolbar_btn_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            <ImageView
+                android:id="@+id/toolbar_title_image"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/logo_title"/>
+            </RelativeLayout>
         </androidx.appcompat.widget.Toolbar>
-    </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
         android:id="@+id/toolbar_division"
         android:orientation="horizontal"
         android:background="@color/colorDivision"
-        android:layout_below="@+id/detail_appbar"
+        android:layout_below="@+id/bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="1dp"/>
 

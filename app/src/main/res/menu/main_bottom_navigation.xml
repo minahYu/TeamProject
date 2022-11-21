@@ -4,7 +4,7 @@
         android:id="@+id/action_home"
         android:icon="@drawable/finger"
         android:enabled="true"
-        android:title="@string/home"/>
+        android:title="home"/>
     <item
         android:id="@+id/action_search"
         android:icon="@drawable/finger"
@@ -14,12 +14,12 @@
         android:id="@+id/gallery"
         android:icon="@drawable/finger"
         android:enabled="true"
-        android:title="@string/gallery"/>
+        android:title="@string/upload_image"/>
     <item
         android:id="@+id/action_alarm"
         android:icon="@drawable/finger"
         android:enabled="true"
-        android:title="@string/alarm"/>
+        android:title="@string/favorite"/>
     <item
         android:id="@+id/action_account"
         android:icon="@drawable/finger"

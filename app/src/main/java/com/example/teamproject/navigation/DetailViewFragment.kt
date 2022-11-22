@@ -13,6 +13,7 @@ import com.example.teamproject.navigation.model.ContentDTO
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.example.teamproject.databinding.FragmentDetailBinding
+import kotlinx.android.synthetic.main.fragment_detail.view.*
 import kotlinx.android.synthetic.main.item_detail.view.*
 
 class DetailViewFragment : Fragment() {
@@ -75,7 +76,7 @@ class DetailViewFragment : Fragment() {
 
             // Image
             Glide.with(p0.itemView.context).load(contentDTOs!![p1].imageUrl)
-                .into(viewholder.detailviewitem_imageview_conent)
+                .into(viewholder.detailviewitem_imageview_content)
 
             // Explain of content
             viewholder.detailviewitem_explain_textview.text = contentDTOs!![p1].explain
@@ -92,10 +93,10 @@ class DetailViewFragment : Fragment() {
             // This code is when the page is loaded
             if (contentDTOs!![p1].favorites.containsKey(uid)) {
                 // This is like status
-                viewholder.detailviewitem_favorite_imageview.setImageResource(R.drawable.ic_favorite)
+                viewholder.detailviewitem_favorite_imageview.setImageResource(R.drawable.ic_heart)
             } else {
                 // This is unlike status
-                viewholder.detailviewitem_favorite_imageview.setImageResource(R.drawable.ic_favorite_border)
+                viewholder.detailviewitem_favorite_imageview.setImageResource(R.drawable.ic_heart_border)
             }
 
             // THis coid is when the profile image is clicked
@@ -121,7 +122,7 @@ class DetailViewFragment : Fragment() {
                     contentDTO?.favorites.remove(uid)
                 } else { // 눌려있지 않을 때
                     contentDTO?.favoriteCount = contentDTO?.favoriteCount
-                    contentDTO?.favorites.[uid!!] = true
+                    contentDTO?.favorites[uid!!] = true
                 }
                 transaction.set(tsDoc,contentDTO)
             }
@@ -142,6 +143,3 @@ class DetailViewFragment : Fragment() {
 
 
 
-
-
-}

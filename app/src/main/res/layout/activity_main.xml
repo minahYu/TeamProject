@@ -20,7 +20,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="22dp"
                 android:id="@+id/toolbar_btn_back"
-                android:src="@drawable/ic_arrow_back"/>
+                android:src="@drawable/back_btn"/>
                 <TextView
                     android:text="UserId"
                     android:textSize="16sp"
@@ -34,7 +34,7 @@
                 android:id="@+id/toolbar_title_image"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:src="@drawable/logo_title"/>
+                android:src="@drawable/logo"/>
             </RelativeLayout>
         </androidx.appcompat.widget.Toolbar>
 

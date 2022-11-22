@@ -14,6 +14,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.UploadTask
+import kotlinx.android.synthetic.main.activity_photo_comment_fragment.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -85,7 +86,7 @@ class PhotoCommentFragment : AppCompatActivity() {
 
             // Insert explain of content
             //contentDTO.explain = addphoto_edit_explain.text.toString()
-            contentDTO.explain = binding.addphoto_comment_edit_explain.text.toString()
+            contentDTO.explain = addphoto_comment_edit_explain.text.toString()
 
             // Insert timestamp
             contentDTO.timeStamp = System.currentTimeMillis()

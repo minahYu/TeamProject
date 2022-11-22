@@ -18,6 +18,15 @@
         android:orientation="vertical">
 
         <EditText
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginBottom="20dp"
+            android:hint="@string/email" />
+
+        <EditText
             android:inputType="textPassword"
             android:id="@+id/password"
             android:layout_width="match_parent"
@@ -52,15 +61,6 @@
             android:layout_marginBottom="200dp"
             android:backgroundTint="@color/colorAccent"
             android:text="@string/create_account" />
-
-        <EditText
-            android:id="@+id/email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
-            android:layout_marginBottom="20dp"
-            android:hint="@string/email" />
 
     </LinearLayout>
 

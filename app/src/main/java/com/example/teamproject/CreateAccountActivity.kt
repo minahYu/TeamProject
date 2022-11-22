@@ -12,8 +12,8 @@ import com.google.firebase.auth.FirebaseUser
 
 class CreateAccountActivity : AppCompatActivity() {
     var auth : FirebaseAuth? = null
-    val binding1 = ActivityCreateAccountBinding.inflate(layoutInflater)
-    val binding2 = ActivityLoginBinding.inflate(layoutInflater)
+    val binding1 by lazy {ActivityCreateAccountBinding.inflate(layoutInflater)}
+    val binding2 by lazy {ActivityLoginBinding.inflate(layoutInflater)}
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding1.root)

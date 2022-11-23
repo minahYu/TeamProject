@@ -18,10 +18,11 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.teamproject.LoginActivity
 import com.example.teamproject.MainActivity
 import com.example.teamproject.R
-import com.example.teamproject.navigation.DetailViewFragment.DetailViewRecyclerViewAdapter.CustomViewHolder
+import com.example.teamproject.navigation.model.AlarmDTO
 import com.google.firebase.auth.FirebaseAuth
 import com.example.teamproject.navigation.model.ContentDTO
 import com.example.teamproject.navigation.model.FollowDTO
+import com.example.teamproject.navigation.util.FcmPush
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_user.view.*
@@ -80,10 +81,10 @@ class UserFragment : Fragment() {
     }
 
     fun getFollowerAndFollowing() {
-        firestore?.collection("users")?.document(uid!!)?.addSnapshotListener { documentSnapshot, firevaseFirestoreException ->
-            if(documentSnapshot == null)
+        firestore?.collection("users")?.document(uid!!)?.addSnapshotListener { value, error ->
+            if(value == null)
                 return@addSnapshotListener
-            var followDTO = documentSnapshot.toObject(FollowDTO::class.java)
+            var followDTO = value.toObject(FollowDTO::class.java)
             if(followDTO?.followingCount != null) {
                 fragmentView?.account_tv_following_count?.text = followDTO?.followingCount?.toString()
             }
@@ -138,7 +139,7 @@ class UserFragment : Fragment() {
                 followDTO = FollowDTO()
                 followDTO!!.followingCount = 1
                 followDTO!!.followers[currentUserUid!!] = true
-
+                followerAlarm(uid!!)
                 transaction.set(tsDocFollower, followDTO!!)
                 return@runTransaction
             }
@@ -157,13 +158,26 @@ class UserFragment : Fragment() {
         }
     }
 
+    fun followerAlarm(destinationUid: String) {
+        var alarmDTO = AlarmDTO()
+        alarmDTO.destinationUid = destinationUid
+        alarmDTO.userId = auth?.currentUser?.email
+        alarmDTO.uid = auth?.currentUser?.uid
+        alarmDTO.kind = 2
+        alarmDTO.timestamp = System.currentTimeMillis()
+        FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
+
+        var message = auth?.currentUser?.email + getString(R.string.alarm_follow)
+        FcmPush.instance.sendMessage(destinationUid, "Dear Diary", message)
+    }
+
     fun getProfileImage() {
-        firestore?.collection("profileImages")?.document(uid!!)?.addSnapshotListener { documentSnapshot,
-                                                                                       firebaseFirestoreException ->
-            if(documentSnapshot == null)
+        firestore?.collection("profileImages")?.document(uid!!)?.addSnapshotListener { value,
+                                                                                       error ->
+            if(value == null)
                 return@addSnapshotListener
-            if(documentSnapshot.data != null) {
-                var url = documentSnapshot?.data!!["image"]
+            if(value.data != null) {
+                var url = value?.data!!["image"]
                 Glide.with(requireActivity()).load(url).apply(RequestOptions().circleCrop()).into(fragmentView?.account_iv_profile!!)
             }
         }
@@ -173,13 +187,13 @@ class UserFragment : Fragment() {
     inner class UserFragmentRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         var contentDTOs : ArrayList<ContentDTO> = arrayListOf()
         init {
-            firestore?.collection("images")?.whereEqualTo("uid", uid)?.addSnapshotListener { querySnapshot,
-                                                                                             firebaseFirestoreException ->
-            if(querySnapshot == null)
+            firestore?.collection("images")?.whereEqualTo("uid", uid)?.addSnapshotListener { value,
+                                                                                             error ->
+            if(value == null)
                 return@addSnapshotListener
 
                 // get data
-                for(snapshot in querySnapshot.documents) {
+                for(snapshot in value.documents) {
                     contentDTOs.add(snapshot.toObject(ContentDTO::class.java)!!)
                 }
                 fragmentView?.account_tv_post_count?.text = contentDTOs.size.toString()
@@ -187,10 +201,10 @@ class UserFragment : Fragment() {
             }
         }
 
-        override fun onCreateViewHolder(p0: ViewGroup, p1: Int): RecyclerView.ViewHolder {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
             var width = resources.displayMetrics.widthPixels / 3
 
-            var imageview = ImageView(p0.context)
+            var imageview = ImageView(parent.context)
             imageview.layoutParams = LinearLayoutCompat.LayoutParams(width, width)
             return CustomViewHolder(imageview)
         }
@@ -203,9 +217,9 @@ class UserFragment : Fragment() {
             return contentDTOs.size
         }
 
-        override fun onBindViewHolder(p0: RecyclerView.ViewHolder, p1: Int) {
-            var imageview = (p0 as CustomViewHolder).imageview
-            Glide.with(p0.itemView.context).load(contentDTOs[p1].imageUrl).apply(RequestOptions().centerCrop()).into(imageview)
+        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+            var imageview = (holder as CustomViewHolder).imageview
+            Glide.with(holder.itemView.context).load(contentDTOs[position].imageUrl).apply(RequestOptions().centerCrop()).into(imageview)
         }
     }
 

@@ -1,5 +1,7 @@
 package com.example.teamproject.navigation
 
+import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,18 +10,22 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.teamproject.R
 import com.example.teamproject.navigation.model.ContentDTO
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.example.teamproject.databinding.FragmentDetailBinding
+import com.example.teamproject.navigation.model.AlarmDTO
+import com.example.teamproject.navigation.util.FcmPush
 import kotlinx.android.synthetic.main.fragment_detail.view.*
 import kotlinx.android.synthetic.main.item_detail.view.*
 
 class DetailViewFragment : Fragment() {
-    var firestore : FirebaseFirestore? = null
-    var uid : String? = null
-    val binding = FragmentDetailBinding.inflate(layoutInflater)
+    var firestore: FirebaseFirestore? = null
+    var uid = FirebaseAuth.getInstance().currentUser?.uid
+    //val binding by lazy {FragmentDetailBinding.inflate(layoutInflater)}
+    //var currentUserUid: String? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -27,28 +33,30 @@ class DetailViewFragment : Fragment() {
     ): View? {
         var view = LayoutInflater.from(activity).inflate(R.layout.fragment_detail, container, false)
         firestore = FirebaseFirestore.getInstance()
-        var uid = FirebaseAuth.getInstance().currentUser?.uid
+        uid = FirebaseAuth.getInstance().currentUser?.uid
 
         view.detailviewfragment_recyclerview.adapter = DetailViewRecyclerViewAdapter()
         view.detailviewfragment_recyclerview.layoutManager = LinearLayoutManager(activity)
+
         return view
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     inner class DetailViewRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         var contentDTOs: ArrayList<ContentDTO> = arrayListOf()
         var contentUidList: ArrayList<String> = arrayListOf()
 
         init {
             firestore?.collection("images")?.orderBy("timestamp")
-                ?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+                ?.addSnapshotListener { value, error ->
                     contentDTOs.clear()
                     contentUidList.clear()
 
                     // Sometimes, This code return null of querySnapshot when it signout
-                    if (querySnapshot == null)
+                    if (value == null)
                         return@addSnapshotListener
 
-                    for (snapshot in querySnapshot!!.documents) {
+                    for (snapshot in value!!.documents) {
                         var item = snapshot.toObject(ContentDTO::class.java)
                         contentDTOs.add(item!!)
                         contentUidList.add(snapshot.id)
@@ -56,8 +64,8 @@ class DetailViewFragment : Fragment() {
                     notifyDataSetChanged()
                 }
         }
-        override fun onCreateViewHolder(p0: ViewGroup, p1: Int): RecyclerView.ViewHolder {
-            var view = LayoutInflater.from(p0.context).inflate(R.layout.item_detail, p0, false)
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+            var view = LayoutInflater.from(parent.context).inflate(R.layout.item_detail, parent, false)
             return CustomViewHolder(view)
         }
 
@@ -67,31 +75,43 @@ class DetailViewFragment : Fragment() {
             return contentDTOs.size
         }
 
-        override fun onBindViewHolder(p0: RecyclerView.ViewHolder, p1: Int) {
+        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             var viewholder =
-                (p0 as UserFragment.UserFragmentRecyclerViewAdapter.CustomViewHolder).itemView
+                (holder as UserFragment.UserFragmentRecyclerViewAdapter.CustomViewHolder).itemView
 
             // UserId
-            viewholder.detailviewitem_profile_textview.text = contentDTOs!![p1].userId
+            viewholder.detailviewitem_profile_textview.text = contentDTOs!![position].userId
 
             // Image
-            Glide.with(p0.itemView.context).load(contentDTOs!![p1].imageUrl)
+            Glide.with(holder.itemView.context).load(contentDTOs!![position].imageUrl)
                 .into(viewholder.detailviewitem_imageview_content)
 
             // Explain of content
-            viewholder.detailviewitem_explain_textview.text = contentDTOs!![p1].explain
+            viewholder.detailviewitem_explain_textview.text = contentDTOs!![position].explain
 
             // likes
             viewholder.detailviewitem_favoritecounter_textview.text =
-                "Likes " + contentDTOs!![p1].favoriteCount
+                "Likes " + contentDTOs!![position].favoriteCount
 
-            // This code is when the button is clicked
             viewholder.detailviewitem_favorite_imageview.setOnClickListener {
-                favoriteEvent(p1)
+                favoriteEvent(position)
             }
 
+            FirebaseFirestore.getInstance()
+                .collection("profileImages")
+                .document(contentDTOs[position].uid!!)
+                .get()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val url = task.result!!["image"]
+                        Glide.with(holder.itemView.context).load(url)
+                            .apply(RequestOptions().circleCrop())
+                            .into(viewholder.detailviewitem_profile)
+                    }
+                }
+
             // This code is when the page is loaded
-            if (contentDTOs!![p1].favorites.containsKey(uid)) {
+            if (contentDTOs!![position].favorites.containsKey(uid)) {
                 // This is like status
                 viewholder.detailviewitem_favorite_imageview.setImageResource(R.drawable.ic_heart)
             } else {
@@ -99,14 +119,20 @@ class DetailViewFragment : Fragment() {
                 viewholder.detailviewitem_favorite_imageview.setImageResource(R.drawable.ic_heart_border)
             }
 
-            // THis coid is when the profile image is clicked
-            viewholder.detailviewitem_profile_image.setOnClickListener {
+            // 상대방 프사 클릭 시 상대방 정보로 넘어감
+            viewholder.detailviewitem_profile.setOnClickListener {
                 var fragment = UserFragment()
                 var bundle = Bundle()
-                bundle.putString("destinationUid", contentDTOs[p1].uid)
-                bundle.putString("userId", contentDTOs[p1].userId)
+                bundle.putString("destinationUid", contentDTOs[position].uid)
+                bundle.putString("userId", contentDTOs[position].userId)
                 fragment.arguments = bundle
                 activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.main_content, fragment)?.commit()
+            }
+            viewholder.detailviewitem_comment_imageview.setOnClickListener { v ->
+                var intent = Intent(v.context, CommentActivity::class.java)
+                intent.putExtra("contentUid", contentUidList[position])
+                intent.putExtra("destinationUid", contentDTOs[position].uid)
+                startActivity(intent)
             }
         }
 
@@ -123,9 +149,23 @@ class DetailViewFragment : Fragment() {
                 } else { // 눌려있지 않을 때
                     contentDTO?.favoriteCount = contentDTO?.favoriteCount
                     contentDTO?.favorites[uid!!] = true
+                    favoriteAlarm(contentDTOs[position].uid!!)
                 }
                 transaction.set(tsDoc,contentDTO)
             }
+        }
+
+        fun favoriteAlarm(destinationUid: String) {
+            var alarmDTO = AlarmDTO()
+            alarmDTO.destinationUid = destinationUid
+            alarmDTO.userId = FirebaseAuth.getInstance().currentUser?.email
+            alarmDTO.uid = FirebaseAuth.getInstance().currentUser?.uid
+            alarmDTO.kind = 0
+            alarmDTO.timestamp = System.currentTimeMillis()
+            FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
+
+            var message = FirebaseAuth.getInstance()?.currentUser?.email + getString(R.string.alarm_favorite)
+            FcmPush.instance.sendMessage(destinationUid, "Dear Diary", message) // dear diary 수정하기
         }
     }
 }

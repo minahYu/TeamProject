@@ -11,10 +11,9 @@ import com.example.teamproject.databinding.ActivityPhotoCommentFragmentBinding
 import com.example.teamproject.navigation.model.ContentDTO
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
-import kotlinx.android.synthetic.main.activity_photo_comment_fragment.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -22,14 +21,14 @@ class PhotoCommentFragment : AppCompatActivity() {
     var PICK_IMAGE_FROM_ALBUM = 0
     var storage : FirebaseStorage? = null
     var photoUri : Uri? = null
+    val binding by lazy { ActivityPhotoCommentFragmentBinding.inflate(layoutInflater) }
     var auth : FirebaseAuth? = null
     var firestore : FirebaseFirestore? = null
-    val binding = ActivityPhotoCommentFragmentBinding.inflate(layoutInflater)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        //Initiate
+        //Initiate Storage
         storage = FirebaseStorage.getInstance()
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
@@ -48,7 +47,7 @@ class PhotoCommentFragment : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode == PICK_IMAGE_FROM_ALBUM) {
-            if(resultCode == RESULT_OK) {
+            if(resultCode == Activity.RESULT_OK) {
                 //This is the path to the selected image
                 photoUri = data?.data
                 binding.addphotoComment.setImageURI(photoUri)
@@ -68,27 +67,25 @@ class PhotoCommentFragment : AppCompatActivity() {
 
         var storageRef = storage?.reference?.child("images")?.child(imageFileName)
 
-
-        // Promise method
-        storageRef?.putFile(photoUri!!)?.continueWithTask { task: Task<UploadTask.TaskSnapshot> ->
+        //Promise method
+        storageRef?.putFile(photoUri!!)?.continueWithTask{ task : Task<UploadTask.TaskSnapshot> ->
             return@continueWithTask storageRef.downloadUrl
         }?.addOnSuccessListener { uri ->
             var contentDTO = ContentDTO()
 
-            // Insert downloadUrl of image
+            //Insert downloadUrl of image
             contentDTO.imageUrl = uri.toString()
 
-            // Insert uid of user
+            //Insert uid of user
             contentDTO.uid = auth?.currentUser?.uid
 
-            // Insert userId
+            //Insert userId
             contentDTO.userId = auth?.currentUser?.email
 
-            // Insert explain of content
-            //contentDTO.explain = addphoto_edit_explain.text.toString()
-            contentDTO.explain = addphoto_comment_edit_explain.text.toString()
+            //Insert explain of content
+            contentDTO.explain = binding.addphotoCommentEditExplain.text.toString()
 
-            // Insert timestamp
+            //Insert timestamp
             contentDTO.timeStamp = System.currentTimeMillis()
 
             firestore?.collection("images")?.document()?.set(contentDTO)
@@ -99,23 +96,23 @@ class PhotoCommentFragment : AppCompatActivity() {
         }
 
         //Callback method
-        /*storageRef?.putFile(photoUri!!)?.addOnSuccessListener {
+        storageRef?.putFile(photoUri!!)?.addOnSuccessListener {
             storageRef.downloadUrl.addOnSuccessListener { uri ->
                 var contentDTO = ContentDTO()
 
-                // Insert downloadUrl of image
+                //Insert downloadUrl of image
                 contentDTO.imageUrl = uri.toString()
 
-                // Insert uid of user
+                //Insert uid of user
                 contentDTO.uid = auth?.currentUser?.uid
 
-                // Insert userId
+                //Insert userId
                 contentDTO.userId = auth?.currentUser?.email
 
-                // Insert explain of content
-                contentDTO.explain = addphoto_edit_explain.text.toString()
+                //Insert explain of content
+                contentDTO.explain = binding.addphotoCommentEditExplain.text.toString()
 
-                // Insert timestamp
+                //Insert timestamp
                 contentDTO.timeStamp = System.currentTimeMillis()
 
                 firestore?.collection("images")?.document()?.set(contentDTO)
@@ -124,6 +121,6 @@ class PhotoCommentFragment : AppCompatActivity() {
 
                 finish()
             }
-        }*/
+        }
     }
 }

@@ -19,7 +19,7 @@
     <string name='signin'>Sign-in</string>
     <string name="create_account">Create an Account</string>
     <string name="signup">Sign-Up</string>
-    <string name="no_account">{"if you don't have any account? then,"}</string>
+    <string name="no_account">"if you don't have any account? then,"</string>
 
     <!-- Bottom Navigation View -->
     <string name="home">Home</string>
@@ -54,6 +54,7 @@
 
     <!-- Toolbar -->
     <string name="back">Back</string>
+    <string name="modify" />
 
     <!-- etc -->
     <item name="visible" type="id" />

@@ -12,14 +12,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TeamProject">
         <activity
-            android:name=".CreateAccountActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="false" />
+            android:name=".navigation.CommentActivity"
+            android:exported="true" />
         <activity
             android:name=".navigation.PhotoCommentFragment"
-            android:exported="false" />
+            android:exported="true" />
+        <activity
+            android:name=".CreateAccountActivity"
+            android:exported="true" />
         <activity
             android:name=".LoginActivity"
             android:exported="true">
@@ -29,6 +29,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="true" />
 
         <meta-data
             android:name="preloaded_fonts"

@@ -25,9 +25,9 @@
     <string name="home">Home</string>
     <string name="search">Search</string>
     <string name="gallery">Gallery</string>
-    <string name="favorite">Favorite</string>
-    <string name="account">Account</string>
     <string name="alarm">Alarm</string>
+    <string name="account">Account</string>
+
 
     <!-- Account -->
     <string name="post">Post</string>

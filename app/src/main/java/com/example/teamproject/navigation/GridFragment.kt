@@ -34,7 +34,7 @@ class GridFragment : Fragment(){
         var contentDTOs: ArrayList<ContentDTO> = arrayListOf()
 
         init {
-            firestore?.collection("diary")?.addSnapshotListener { querySnapshot, firebaseFirestore ->
+            firestore?.collection("images")?.addSnapshotListener { querySnapshot, firebaseFirestore ->
                 //Some times, This code return null of querySnapshot when it signout
                 if (querySnapshot == null) return@addSnapshotListener
 

@@ -86,7 +86,7 @@ class PhotoCommentFragment : AppCompatActivity() {
             contentDTO.explain = binding.addphotoCommentEditExplain.text.toString()
 
             //Insert timestamp
-            contentDTO.timeStamp = System.currentTimeMillis()
+            contentDTO.timestamp = System.currentTimeMillis()
 
             firestore?.collection("images")?.document()?.set(contentDTO)
 
@@ -113,7 +113,7 @@ class PhotoCommentFragment : AppCompatActivity() {
                 contentDTO.explain = binding.addphotoCommentEditExplain.text.toString()
 
                 //Insert timestamp
-                contentDTO.timeStamp = System.currentTimeMillis()
+                contentDTO.timestamp = System.currentTimeMillis()
 
                 firestore?.collection("images")?.document()?.set(contentDTO)
 

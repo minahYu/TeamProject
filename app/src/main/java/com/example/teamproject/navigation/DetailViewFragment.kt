@@ -182,4 +182,3 @@ class DetailViewFragment : Fragment() {
 
 
 
-

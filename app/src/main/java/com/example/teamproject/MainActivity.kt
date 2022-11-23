@@ -26,11 +26,17 @@ import com.google.firebase.storage.UploadTask
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
-    val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
+    private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        binding.toolbarBtnBack.setOnClickListener {
+            //startActivity(Intent(this, MainActivity::class.java))
+
+        }
+
         binding.bottomNavigation.setOnNavigationItemSelectedListener(this)
 
         ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), 1)
@@ -70,10 +76,6 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                 supportFragmentManager.beginTransaction().replace(R.id.main_content, userFragment).commit()
                 return true
             }
-            /*R.id.gallery ->{
-
-                return true
-            }*/
         }
         return false
     }
@@ -118,7 +120,6 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         }
     }
 }
-
 
 
 

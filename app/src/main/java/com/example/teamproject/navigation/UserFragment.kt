@@ -26,7 +26,6 @@ import com.example.teamproject.navigation.util.FcmPush
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_user.view.*
-import kotlinx.coroutines.currentCoroutineContext
 
 class UserFragment : Fragment() {
     var fragmentView : View? = null

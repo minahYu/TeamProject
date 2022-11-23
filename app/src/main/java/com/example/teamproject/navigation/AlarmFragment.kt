@@ -34,7 +34,8 @@ class AlarmFragment : Fragment(){
             FirebaseFirestore.getInstance().collection("alarms").whereEqualTo("destinationUid", uid)
                 .addSnapshotListener { value, error ->
                     alarmDTOList.clear()
-                    if(value == null) return@addSnapshotListener
+                    if(value == null)
+                        return@addSnapshotListener
 
                     for(snapshot in value.documents){
                         alarmDTOList.add(snapshot.toObject(AlarmDTO::class.java)!!)

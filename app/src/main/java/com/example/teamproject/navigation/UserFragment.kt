@@ -69,6 +69,12 @@ class UserFragment : Fragment() {
         fragmentView?.account_recyclerview?.adapter = UserFragmentRecyclerViewAdapter()
         fragmentView?.account_recyclerview?.layoutManager = GridLayoutManager(requireActivity(),3)
 
+        fragmentView?.account_recyclerview?.setOnClickListener {
+            var photoPickerIntent = Intent(Intent.ACTION_PICK)
+            photoPickerIntent.type = "image/*"
+            activity?.startActivityForResult(photoPickerIntent, PICK_PROFILE_FROM_ALBUM)
+        }
+
         fragmentView?.account_iv_profile?.setOnClickListener {
             var photoPickerIntent = Intent(Intent.ACTION_PICK)
             photoPickerIntent.type = "image/*"
@@ -171,8 +177,7 @@ class UserFragment : Fragment() {
     }
 
     fun getProfileImage() {
-        firestore?.collection("profileImages")?.document(uid!!)?.addSnapshotListener { value,
-                                                                                       error ->
+        firestore?.collection("profileImages")?.document(uid!!)?.addSnapshotListener { value, error ->
             if(value == null)
                 return@addSnapshotListener
             if(value.data != null) {
@@ -186,8 +191,7 @@ class UserFragment : Fragment() {
     inner class UserFragmentRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         var contentDTOs : ArrayList<ContentDTO> = arrayListOf()
         init {
-            firestore?.collection("images")?.whereEqualTo("uid", uid)?.addSnapshotListener { value,
-                                                                                             error ->
+            firestore?.collection("images")?.whereEqualTo("uid", uid)?.addSnapshotListener { value, error ->
             if(value == null)
                 return@addSnapshotListener
 
@@ -212,13 +216,13 @@ class UserFragment : Fragment() {
 
         }
 
-        override fun getItemCount(): Int {
-            return contentDTOs.size
-        }
-
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             var imageview = (holder as CustomViewHolder).imageview
             Glide.with(holder.itemView.context).load(contentDTOs[position].imageUrl).apply(RequestOptions().centerCrop()).into(imageview)
+        }
+
+        override fun getItemCount(): Int {
+            return contentDTOs.size
         }
     }
 

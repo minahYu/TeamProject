@@ -36,7 +36,8 @@ class GridFragment : Fragment(){
         init {
             firestore?.collection("images")?.addSnapshotListener { querySnapshot, firebaseFirestore ->
                 //Some times, This code return null of querySnapshot when it signout
-                if (querySnapshot == null) return@addSnapshotListener
+                if (querySnapshot == null)
+                    return@addSnapshotListener
 
                 //Get data
                 for (snapshot in querySnapshot.documents) {
@@ -58,7 +59,6 @@ class GridFragment : Fragment(){
             RecyclerView.ViewHolder(imageview) {
 
         }
-
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             var imageview = (holder as CustomViewHolder).imageview

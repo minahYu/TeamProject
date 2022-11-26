@@ -16,17 +16,17 @@ import com.example.teamproject.R
 import com.example.teamproject.navigation.model.ContentDTO
 import com.example.teamproject.databinding.FragmentGridBinding
 import com.google.firebase.firestore.FirebaseFirestore
-//import kotlinx.android.synthetic.main.fragment_grid.view.*
+import kotlinx.android.synthetic.main.fragment_grid.view.*
 
 class GridFragment : Fragment(){
-    val binding by lazy { FragmentGridBinding.inflate(layoutInflater) }
     var firestore : FirebaseFirestore? = null
     var fragmentView : View? = null
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         fragmentView = LayoutInflater.from(activity).inflate(R.layout.fragment_grid, container, false)
         firestore = FirebaseFirestore.getInstance()
-        binding.gridfragmentRecyclerView.adapter = UserFragmentRecyclerViewAdapter()
-        binding.gridfragmentRecyclerView.layoutManager = GridLayoutManager(activity, 3)
+        println("Grid")
+        fragmentView?.gridfragment_recyclerView?.adapter = UserFragmentRecyclerViewAdapter()
+        fragmentView?.gridfragment_recyclerView?.layoutManager = GridLayoutManager(activity, 3)
         return fragmentView
     }
     @SuppressLint("NotifyDataSetChanged")

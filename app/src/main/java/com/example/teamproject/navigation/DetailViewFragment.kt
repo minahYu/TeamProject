@@ -62,6 +62,7 @@ class DetailViewFragment : Fragment() {
                         contentUidList.add(snapshot.id)
                     }
                     notifyDataSetChanged()
+                    println("DetailViewFragment")
                 }
         }
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -76,8 +77,7 @@ class DetailViewFragment : Fragment() {
         }
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-            var viewholder =
-                (holder as UserFragment.UserFragmentRecyclerViewAdapter.CustomViewHolder).itemView
+            var viewholder = (holder as CustomViewHolder).itemView
 
             // UserId
             viewholder.detailviewitem_profile_textview.text = contentDTOs!![position].userId

@@ -62,7 +62,6 @@ class DetailViewFragment : Fragment() {
                         contentUidList.add(snapshot.id)
                     }
                     notifyDataSetChanged()
-                    println("DetailViewFragment")
                 }
         }
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

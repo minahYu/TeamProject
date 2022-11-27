@@ -47,7 +47,6 @@ class AlarmFragment : Fragment(){
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
             var view = LayoutInflater.from(parent.context).inflate(R.layout.item_comment, parent, false)
             return CustomViewHolder(view)
-            println("AlramFragment")
         }
         inner class CustomViewHolder(view: View) : RecyclerView.ViewHolder(view)
 

@@ -22,22 +22,22 @@
                 android:id="@+id/toolbar_btn_back"
                 android:src="@drawable/back_btn"/>
 
-                <TextView
-                    android:id="@+id/toolbar_username"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_toRightOf="@+id/toolbar_username"
-                    android:gravity="center"
-                    android:text="UserId"
-                    android:textColor="@color/colorNavIcon"
-                    android:textSize="16sp"
-                    tools:ignore="NotSibling" />
+            <TextView
+                android:id="@+id/toolbar_username"
+                android:layout_width="180dp"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@+id/toolbar_username"
+                android:gravity="center"
+                android:text="UserId"
+                android:textColor="@color/colorNavIcon"
+                android:textSize="16sp"
+                tools:ignore="NotSibling" />
 
-                <ImageView
+            <ImageView
                 android:id="@+id/toolbar_title_image"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@drawable/logo"/>
+                android:src="@drawable/logo" />
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
 

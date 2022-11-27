@@ -39,7 +39,6 @@ class UserFragment : Fragment() {
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         fragmentView = LayoutInflater.from(activity).inflate(R.layout.fragment_user,container,false)
-        println("UserFragment")
         uid = arguments?.getString("destinationUid")
         firestore = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
@@ -48,6 +47,14 @@ class UserFragment : Fragment() {
         if(uid == currentUserUid) {
             // 내 페이지
             fragmentView?.account_btn_follow_signout?.text = getString(R.string.signout)
+            var mainActivity = (activity as MainActivity)
+            mainActivity?.binding.toolbarUsername?.text = auth?.currentUser?.email
+            mainActivity?.binding.toolbarBtnBack?.setOnClickListener {
+                mainActivity?.binding.bottomNavigation.selectedItemId = R.id.action_home
+            }
+            mainActivity?.binding.toolbarTitleImage?.visibility = View.GONE
+            mainActivity?.binding.toolbarUsername?.visibility = View.VISIBLE
+            mainActivity?.binding.toolbarBtnBack?.visibility = View.GONE
             fragmentView?.account_btn_follow_signout?.setOnClickListener {
                 activity?.finish()
                 startActivity(Intent(activity, LoginActivity::class.java))
@@ -98,7 +105,7 @@ class UserFragment : Fragment() {
             if(followDTO?.followerCount != null) {
                 fragmentView?.account_tv_follower_count?.text = followDTO?.followerCount?.toString()
                 if(followDTO?.followers?.containsKey(currentUserUid!!)) {
-                    fragmentView?.account_btn_follow_signout?.text = getString(R.string.follow_cancel)
+                    fragmentView?.account_btn_follow_signout?.text = getString(R.string.unfollow)
                     fragmentView?.account_btn_follow_signout?.background?.setColorFilter(ContextCompat.getColor(requireActivity(), R.color.colorLightGray), PorterDuff.Mode.MULTIPLY)
                 } else {
                     //fragmentView?.account_btn_follow_signout?.text = getString(R.string.follow)

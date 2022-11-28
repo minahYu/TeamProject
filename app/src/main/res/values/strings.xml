@@ -12,14 +12,15 @@
     <string name="signin_facebook">Facebook login</string>
     <string name="signup_complete">Membership success</string>
     <string name="signin_complete">Login success</string>
-    <string name="signout">Signout</string>
+    <string name="signout">로그아웃</string>
     <string name="signout_success">Signout success</string>
     <string name="signout_fail">Signout fail</string>
     <string name="signout_fail_null">Please enter your email and password</string>
-    <string name='signin'>Sign-in</string>
-    <string name="create_account">Create an Account</string>
-    <string name="signup">Sign-Up</string>
-    <string name="no_account">"if you don't have any account? then,"</string>
+    <string name='signin'>로그인</string>
+    <string name="create_account">회원가입</string>
+    <string name="signup">회원가입</string>
+    <string name="no_account">"계정이 없다면, 회원가입 후 이용해주세요"</string>
+    <string name="title">Wooah</string>
 
     <!-- Bottom Navigation View -->
     <string name="home">Home</string>
@@ -28,13 +29,22 @@
     <string name="alarm">Alarm</string>
     <string name="account">Account</string>
 
+    <!-- Create -->
+    <string name="cfm_password">Confirm Password</string>
+    <string name="nickname">Name</string>
+    <string name="create">완료</string>
+    <string name="cancel">취소</string>
+
+    <!-- Upload -->
+    <string name="upload">업로드</string>
+
 
     <!-- Account -->
-    <string name="post">Post</string>
-    <string name="following">Following</string>
-    <string name="follower">Follower</string>
-    <string name="follow">Follow</string>
-    <string name="unfollow">UnFollow</string>
+    <string name="post">게시물</string>
+    <string name="following">팔로잉</string>
+    <string name="follower">팔로워</string>
+    <string name="follow">팔로우</string>
+    <string name="unfollow">언팔로우</string>
     <string name="profile">Profile</string>
     <string name="count_0">0</string>
 

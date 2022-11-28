@@ -2,27 +2,27 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/action_home"
-        android:icon="@drawable/finger"
+        android:icon="@drawable/ic_home"
         android:enabled="true"
         android:title="@string/home"/>
     <item
         android:id="@+id/action_search"
-        android:icon="@drawable/finger"
+        android:icon="@drawable/ic_magnifier"
         android:enabled="true"
         android:title="@string/search"/>
     <item
         android:id="@+id/gallery"
-        android:icon="@drawable/finger"
+        android:icon="@drawable/ic_upload"
         android:enabled="true"
         android:title="@string/upload_image"/>
     <item
         android:id="@+id/action_alarm"
-        android:icon="@drawable/finger"
+        android:icon="@drawable/ic_bell"
         android:enabled="true"
         android:title="@string/alarm"/>
     <item
         android:id="@+id/action_account"
-        android:icon="@drawable/finger"
+        android:icon="@drawable/ic_profile"
         android:enabled="true"
         android:title="@string/account"/>
 

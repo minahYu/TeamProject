@@ -3,36 +3,41 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/colorLightGray"
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:background="@color/colorLightGray"
         android:id="@+id/alarm_ll"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="20dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="9"
-            android:text="alarm"
+            android:text="알람"
             android:textColor="@color/black"
             android:textSize="30sp"
             android:textStyle="bold" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
         android:id="@+id/alarmfragment_recyclerview"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/alarm_ll">
+        app:layout_constraintTop_toBottomOf="@+id/alarm_ll"
+        android:background="@color/colorLightGray">
 
     </androidx.recyclerview.widget.RecyclerView>
 

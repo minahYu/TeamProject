@@ -56,19 +56,22 @@ class CreateAccountActivity : AppCompatActivity() {
     private fun signUp(userEmail: String, password: String) {
         Firebase.auth.createUserWithEmailAndPassword(userEmail, password)
             .addOnCompleteListener(this) {
-                if(it.isSuccessful) {
-                    Toast.makeText(this, "Create an account", Toast.LENGTH_SHORT).show()
-                    //val user = auth?.currentUser
-                    transitionPage2(it.result?.user)
-                    //finish()
-                } else if(it.exception?.message.isNullOrEmpty() == false) {
-                    Toast.makeText(this, it.exception?.message, Toast.LENGTH_LONG).show()
-                }
-                else {
-                    //Log.w("LoginActivity", "signInWithEmail", it.exception)
-                    //Toast.makeText(this, "Authentication failed.", Toast.LENGTH_SHORT).show()
-                   //Toast.makeText(this, it.exception?.message, Toast.LENGTH_LONG).show()
-                    Toast.makeText(this, "Find that duplicated E-mail", Toast.LENGTH_SHORT).show()
+                if(binding1.joinPassword.text.toString().equals(binding1.joinPwck.text.toString()))
+                {
+                    if(it.isSuccessful) {
+                        Toast.makeText(this, "Create an account", Toast.LENGTH_SHORT).show()
+                        //val user = auth?.currentUser
+                        transitionPage2(it.result?.user)
+                        //finish()
+                    } else if(it.exception?.message.isNullOrEmpty() == false) {
+                        Toast.makeText(this, it.exception?.message, Toast.LENGTH_LONG).show()
+                    }
+                    else {
+                        //Log.w("LoginActivity", "signInWithEmail", it.exception)
+                        //Toast.makeText(this, "Authentication failed.", Toast.LENGTH_SHORT).show()
+                        //Toast.makeText(this, it.exception?.message, Toast.LENGTH_LONG).show()
+                        Toast.makeText(this, "Find that duplicated E-mail", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
     }

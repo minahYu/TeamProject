@@ -125,7 +125,8 @@ class DetailViewFragment : Fragment() {
                 bundle.putString("destinationUid", contentDTOs[position].uid)
                 bundle.putString("userId", contentDTOs[position].userId)
                 fragment.arguments = bundle
-                activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.main_content, fragment)?.commit()
+                activity?.supportFragmentManager?.beginTransaction()
+                    ?.replace(R.id.main_content, fragment)?.commit()
             }
             viewholder.detailviewitem_comment_imageview.setOnClickListener { v ->
                 var intent = Intent(v.context, CommentActivity::class.java)
@@ -146,7 +147,7 @@ class DetailViewFragment : Fragment() {
                     contentDTO?.favoriteCount = contentDTO?.favoriteCount - 1
                     contentDTO?.favorites.remove(uid)
                 } else { // 눌려있지 않을 때
-                    contentDTO?.favoriteCount = contentDTO?.favoriteCount
+                    contentDTO?.favoriteCount = contentDTO?.favoriteCount + 1
                     contentDTO?.favorites[uid!!] = true
                     favoriteAlarm(contentDTOs[position].uid!!)
                 }

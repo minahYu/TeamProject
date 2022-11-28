@@ -3,6 +3,7 @@ package com.example.teamproject
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import com.example.teamproject.databinding.ActivityLoginBinding
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -11,7 +12,6 @@ import com.google.firebase.auth.FirebaseUser
 
 class LoginActivity : AppCompatActivity() {
     var auth : FirebaseAuth? = null
-    var googleSignInClient : GoogleSignInAccount? = null
     val binding by lazy { ActivityLoginBinding.inflate(layoutInflater) }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,7 +19,9 @@ class LoginActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
 
         binding.signin.setOnClickListener {
-            signInAndSignUp()
+            val email = binding.email.text.toString()
+            val password = binding.password.text.toString()
+            signInEmail(email, password)
         }
 
         binding.signup.setOnClickListener {
@@ -32,34 +34,16 @@ class LoginActivity : AppCompatActivity() {
         moveMainPage(auth?.currentUser)
     }
 
-    fun signInAndSignUp() {
-        auth?.createUserWithEmailAndPassword(binding.email.text.toString(), binding.password.text.toString())
-            ?.addOnCompleteListener {
-                task ->
-                if(task.isSuccessful) {
-                    //Create an Account
-                    transitionPage1(task.result?.user)
-                }
-                else if(task.exception?.message.isNullOrEmpty()) {
-                    //Login Error
-                    Toast.makeText(this, task.exception?.message, Toast.LENGTH_LONG).show()
-                }
-                else {
-                    //Login Success!!!
-                    signInEmail()
-                }
-            }
-    }
-
-    fun signInEmail() {
-        auth?.signInWithEmailAndPassword(binding.email.text.toString(), binding.password.text.toString())
+    fun signInEmail(email: String, password: String) {
+        auth?.signInWithEmailAndPassword(email, password)
             ?.addOnCompleteListener {
                     task ->
                 if(task.isSuccessful) {
                     //Login Success
-                    transitionPage1(task.result?.user)
+                    moveMainPage(task.result?.user)
                 } else {
                     //show the error message
+                    Log.w("LoginActivity", "signInWithEmail", task.exception)
                     Toast.makeText(this, task.exception?.message, Toast.LENGTH_LONG).show()
                 }
             }
@@ -71,13 +55,4 @@ class LoginActivity : AppCompatActivity() {
             finish()
         }
     }
-
-    fun transitionPage1(user:FirebaseUser?) {
-        if(user != null) {
-            startActivity(Intent(this, MainActivity::class.java))
-        }
-    }
-
-
-
 }

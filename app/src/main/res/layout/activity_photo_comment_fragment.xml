@@ -10,10 +10,14 @@
         android:id="@+id/photo_comment_toolbar"
         android:layout_width="match_parent"
         android:layout_height="35dp">
-        <ImageView
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/text"/>
+            android:fontFamily="@font/title"
+            android:gravity="center"
+            android:text="@string/title"
+            android:textColor="@color/black"
+            android:textSize="40dp"/>
     </androidx.appcompat.widget.Toolbar>
     <LinearLayout
         android:id="@+id/toolbar_division"
@@ -25,33 +29,37 @@
 
     <ImageView
         android:id="@+id/addphoto_comment"
-        android:layout_width='100dp'
-        android:layout_height="100dp"
+        android:layout_width='300dp'
+        android:layout_height="300dp"
         android:layout_below="@+id/toolbar_division"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginStart="55dp"
+        android:layout_marginTop="80dp"
         android:layout_marginBottom="8dp" />
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/edittext"
-        android:layout_below="@+id/toolbar_division"
+        android:layout_below="@+id/addphoto_comment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/addphoto_comment">
+        android:layout_height="wrap_content">
         <EditText
             android:hint="nothing"
             android:id="@+id/addphoto_comment_edit_explain"
             android:gravity="top"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="100dp"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/addphoto_comment_btn_upload"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="120dp"
+        android:layout_marginEnd="120dp"
+        android:backgroundTint="@color/sky"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/edittext"
-        android:layout_toRightOf="@+id/addphoto_comment"
-        android:text="upload" />
+        android:text="@string/upload" />
 
 </RelativeLayout>

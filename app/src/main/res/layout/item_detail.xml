@@ -3,9 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/colorLightGray">
 
     <LinearLayout
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:gravity="center_vertical">
@@ -15,7 +17,7 @@
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_margin="7.5dp"
-            android:src="@mipmap/ic_launcher" />
+            android:src="@drawable/ic_color_profile" />
 
         <TextView
             android:id="@+id/detailviewitem_profile_textview"
@@ -86,24 +88,26 @@
             android:gravity="center_vertical">
 
             <ImageView
+                android:layout_marginLeft="35dp"
                 android:id="@+id/detailviewitem_favorite_imageview"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
-                android:src="@drawable/ic_heart_border" />
+                android:src="@drawable/ic_heart" />
 
             <ImageView
                 android:id="@+id/detailviewitem_comment_imageview"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
-                android:src="@drawable/ic_heart" />
+                android:src="@drawable/ic_comment" />
         </LinearLayout>
 
         <TextView
             android:id="@+id/detailviewitem_favoritecounter_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="like 0"
+            android:layout_marginLeft="35dp"
+            android:layout_marginTop="20dp"
+            android:text="좋아요 0"
             android:layout_below="@id/diary_main" />
     </RelativeLayout>
 </LinearLayout>

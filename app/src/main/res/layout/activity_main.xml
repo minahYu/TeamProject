@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:color="@color/teal_200"
+    android:background="@color/colorLightGray"
     tools:context=".MainActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -33,11 +33,15 @@
                 android:textSize="16sp"
                 tools:ignore="NotSibling" />
 
-            <ImageView
+            <TextView
                 android:id="@+id/toolbar_title_image"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@drawable/logo" />
+                android:fontFamily="@font/title"
+                android:gravity="center"
+                android:text="@string/title"
+                android:textColor="@color/black"
+                android:textSize="40dp"/>
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
 
@@ -70,6 +74,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        app:menu="@menu/main_bottom_navigation" />
+        app:menu="@menu/main_bottom_navigation"
+         app:itemIconTint="@drawable/menu_selector_color"
+         app:itemTextColor="@drawable/menu_selector_color"/>
 
 </RelativeLayout>

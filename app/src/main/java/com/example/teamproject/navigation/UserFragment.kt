@@ -1,13 +1,17 @@
 package com.example.teamproject.navigation
 
 import android.annotation.SuppressLint
+import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.graphics.PorterDuff
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -24,6 +28,7 @@ import com.example.teamproject.navigation.model.ContentDTO
 import com.example.teamproject.navigation.model.FollowDTO
 import com.example.teamproject.navigation.util.FcmPush
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_user.view.*
 
@@ -34,6 +39,9 @@ class UserFragment : Fragment() {
     var uid : String? = null
     var auth : FirebaseAuth? = null
     var currentUserUid : String? = null
+    var storage = FirebaseStorage.getInstance()
+    var storageRef = storage.reference.child("images").child("imageName")
+    var contentDTO: ContentDTO? = null
     companion object {
         var PICK_PROFILE_FROM_ALBUM = 10
     }
@@ -78,20 +86,49 @@ class UserFragment : Fragment() {
         fragmentView?.account_recyclerview?.adapter = UserFragmentRecyclerViewAdapter()
         fragmentView?.account_recyclerview?.layoutManager = GridLayoutManager(requireActivity(),3)
 
+        val activityLauncher = activityResultLauncher()
+
         fragmentView?.account_recyclerview?.setOnClickListener {
             var photoPickerIntent = Intent(Intent.ACTION_PICK)
             photoPickerIntent.type = "image/*"
-            activity?.startActivityForResult(photoPickerIntent, PICK_PROFILE_FROM_ALBUM)
+            activityLauncher.launch(photoPickerIntent)
+            //activity?.startActivityForResult(photoPickerIntent, PICK_PROFILE_FROM_ALBUM)
         }
 
         fragmentView?.account_iv_profile?.setOnClickListener {
             var photoPickerIntent = Intent(Intent.ACTION_PICK)
             photoPickerIntent.type = "image/*"
-            activity?.startActivityForResult(photoPickerIntent,PICK_PROFILE_FROM_ALBUM)
+            activityLauncher.launch(photoPickerIntent)
+            //activity?.startActivityForResult(photoPickerIntent,PICK_PROFILE_FROM_ALBUM)
         }
         getProfileImage()
         getFollowerAndFollowing()
         return fragmentView
+    }
+
+    fun activityResultLauncher(): ActivityResultLauncher<Intent> {
+        val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if(it.resultCode == RESULT_OK && it.data != null) {
+                var imageUri = it.data?.data
+                if (imageUri != null) {
+                    storageRef.putFile(imageUri).continueWithTask {
+                        return@continueWithTask storageRef.downloadUrl
+                    }.addOnSuccessListener {
+                        contentDTO?.imageUrl = it.toString()
+                        contentDTO?.uid = auth?.currentUser?.uid
+                        contentDTO?.uid?.let {
+                            firestore?.collection("users")
+                                ?.document(it)?.set(contentDTO!!)
+                        }
+                    }
+                    getProfileImage()
+                }
+            }
+            else {
+                Log.d("ActivityResult", "Something wrong")
+            }
+        }
+        return resultLauncher
     }
 
     fun getFollowerAndFollowing() {
